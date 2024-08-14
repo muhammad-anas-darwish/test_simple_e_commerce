@@ -11,7 +11,7 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function __construct()
+    public function __construct(protected AuthService $authService)
     {
         $this->middleware('auth:api', ['except' => ['login','register']]);
     }
@@ -21,6 +21,7 @@ class AuthController extends Controller
         $credentials = $request->validated();
 
         $token = Auth::attempt($credentials);
+        
         if (!$token) {
             return response()->json([
                 'status' => 'error',
@@ -43,13 +44,9 @@ class AuthController extends Controller
     {
         $data = $request->validated();
 
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-
+        $user = $this->authService->createUser($data);
         $token = Auth::login($user);
+
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',
