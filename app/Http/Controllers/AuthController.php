@@ -4,16 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use App\Services\AuthService;
 
 class AuthController extends Controller
 {
     public function __construct(protected AuthService $authService)
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     public function login(LoginUserRequest $request)
@@ -21,23 +19,19 @@ class AuthController extends Controller
         $credentials = $request->validated();
 
         $token = Auth::attempt($credentials);
-        
+
         if (!$token) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ], 401);
+            return response()->unauthorized();
         }
 
         $user = Auth::user();
-        return response()->json([
-                'status' => 'success',
-                'user' => $user,
-                'authorization' => [
-                    'token' => $token,
-                    'type' => 'bearer',
-                ]
-            ]);
+        return response()->ok([
+            'user' => $user,
+            'authorization' => [
+                'token' => $token,
+                'type' => 'bearer',
+            ],
+        ]);
     }
 
     public function register(RegisterUserRequest $request)
@@ -47,35 +41,33 @@ class AuthController extends Controller
         $user = $this->authService->createUser($data);
         $token = Auth::login($user);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully',
-            'user' => $user,
-            'authorization' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ]);
+        return response()->created(
+            [
+                'user' => $user,
+                'authorization' => [
+                    'token' => $token,
+                    'type' => 'bearer',
+                ],
+            ],
+            'User created successfully',
+        );
     }
 
     public function logout()
     {
         Auth::logout();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Successfully logged out',
-        ]);
+
+        return response()->ok([], 'Successfully logged out');
     }
 
     public function refresh()
     {
-        return response()->json([
-            'status' => 'success',
+        return response()->ok([
             'user' => Auth::user(),
             'authorization' => [
                 'token' => Auth::refresh(),
                 'type' => 'bearer',
-            ]
+            ],
         ]);
     }
 }
