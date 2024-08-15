@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,3 +33,6 @@ Route::apiResource('products', ProductController::class);
 
 Route::get('/cart/items', [CartItemController::class, 'index'])->name('cart.items');
 Route::post('/cart/items', [CartItemController::class, 'updateCart'])->name('cart.update');
+
+Route::get('/user/orders', [OrderController::class, 'getUserOrders'])->name('orders.getUserOrders');
+Route::apiResource('orders', OrderController::class)->only(['index', 'store', 'update', 'show']);

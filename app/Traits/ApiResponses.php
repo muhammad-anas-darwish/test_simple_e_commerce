@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 trait ApiResponses
 {
@@ -13,12 +12,12 @@ trait ApiResponses
             'status' => 'success',
         ];
 
-        if ($data instanceof JsonResource || count($data)) {
-            $response['data'] = $data;
-        }
-
         if ($message) {
             $response['message'] = $message;
+        }
+
+        if (!empty($data)) {
+            $response['data'] = $data;
         }
 
         return response()->json($response, $status);
@@ -48,6 +47,8 @@ trait ApiResponses
                 'per_page' => $items->perPage(),
                 'current_page' => $items->currentPage(),
                 'total_pages' => $items->lastPage(),
+                'next_page_url' => $items->nextPageUrl(),
+                'previous_page_url' => $items->previousPageUrl(),
             ]
         ], $message);
     }

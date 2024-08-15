@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\CartItem;
 use App\Models\Product;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class CartService
 {
@@ -18,7 +20,7 @@ class CartService
     public function updateCart($productId, $userId, $quantityChange): CartItem
     {
         $product = Product::findOrFail($productId);
-        $cartItem = CartItem::where('user_id', $userId)
+        $cartItem = CartItem::with('product')->where('user_id', $userId)
                             ->where('product_id', $productId)
                             ->first();
 
@@ -42,6 +44,6 @@ class CartService
             'user_id' => $userId,
             'product_id' => $productId,
             'quantity' => $quantityChange,
-        ]);
+        ])->with('product')->first();
     }
 }
