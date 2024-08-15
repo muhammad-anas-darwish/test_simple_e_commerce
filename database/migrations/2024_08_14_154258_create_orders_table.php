@@ -13,15 +13,15 @@ return new class extends Migration
     public function up(): void
     {
         DB::statement("
-            CREATE TABLE users (
+            CREATE TABLE orders (
             id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            email VARCHAR(255) NOT NULL UNIQUE,
-            email_verified_at TIMESTAMP NULL DEFAULT NULL,
-            password VARCHAR(255) NOT NULL,
-            remember_token VARCHAR(100) NULL,
+            user_id BIGINT UNSIGNED NOT NULL,
+            total DECIMAL(10, 2) NOT NULL,
+            status ENUM('pending', 'completed', 'cancelled') DEFAULT 'pending',
+            address VARCHAR(255) NOT NULL,
             created_at TIMESTAMP NULL DEFAULT NULL,
-            updated_at TIMESTAMP NULL DEFAULT NULL
+            updated_at TIMESTAMP NULL DEFAULT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id)
         );");
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement("DROP TABLE IF EXISTS users;");
+        DB::statement("DROP TABLE IF EXISTS orders;");
     }
 };

@@ -31,9 +31,11 @@ class ResponseServiceProvider extends ServiceProvider
                 'status' => 'success',
                 'data' => $data,
             ];
+
             if ($message !== '') {
                 $response['message'] = $message;
             }
+
             return Response::json($response, 200);
         });
 
@@ -46,7 +48,25 @@ class ResponseServiceProvider extends ServiceProvider
                 ], 201);
             }
 
-            return Response::json(['status' => 'success'], 201);
+            return Response::json([
+                'status' => 'success',
+                'message' => $message
+            ], 201);
+        });
+
+        Response::macro('updated', function ($data = [], $message = 'Updated Successfully') {
+            if (count($data)) {
+                return Response::json([
+                    'status' => 'success',
+                    'message' => $message,
+                    'data' => $data,
+                ], 200);
+            }
+
+            return Response::json([
+                'status' => 'success',
+                'message' => $message,
+            ], 200);
         });
 
         Response::macro('noContent', function ($data = []) {
