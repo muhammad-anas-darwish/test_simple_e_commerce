@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\OrderStatus;
+use App\Exceptions\CustomJsonException;
 use App\Jobs\ClearCartItems;
 use App\Models\CartItem;
 use App\Models\Order;
@@ -28,7 +29,7 @@ class OrderService
     {
         $cartItems = CartItem::with('product')->where('user_id', $userId);
         if (!$cartItems->exists()) {
-            throw new \Exception('Cart is empty');
+            throw new CustomJsonException('Cart is empty', 400);
         }
         return $cartItems;
     }

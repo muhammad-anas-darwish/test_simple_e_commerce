@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\CustomJsonException;
 use App\Models\CartItem;
 use App\Models\Product;
 use Exception;
@@ -13,7 +14,7 @@ class CartService
     protected function validateQuantity($productQuantity, $newQuantity)
     {
         if ($newQuantity > $productQuantity) {
-            throw new Exception('Insufficient product quantity');
+            throw new CustomJsonException('Insufficient product quantity', 400);
         }
     }
 
@@ -35,7 +36,7 @@ class CartService
         }
 
         if ($quantityChange <= 0) {
-            throw new Exception('Cannot remove item that does not exist in cart');
+            throw new CustomJsonException('Cannot remove item that does not exist in cart', 400);
         }
 
         $this->validateQuantity($product->quantity, $quantityChange);
