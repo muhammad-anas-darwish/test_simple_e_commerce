@@ -46,7 +46,7 @@ class OrderController extends Controller
 
         $order = $this->orderService->checkout(Auth::id(), $data['address']);
 
-        return $this->successResponse($order, 'Checkout Successfully');
+        return $this->successResponse(new OrderResource($order), 'Checkout Successfully');
     }
 
     /**
@@ -54,6 +54,10 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+        if (Auth::id() !== $order->user_id && !Auth::user()->is_admin) {
+            return $this->errorResponse('You are not authorized to view this order.', 403);
+        }
+
         $order = $this->orderService->showOrder($order);
         return $this->successResponse(new OrderResource($order), 'Order retrieved successfully');
     }

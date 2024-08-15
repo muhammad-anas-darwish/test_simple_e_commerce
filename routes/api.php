@@ -29,10 +29,14 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 });
 
-Route::apiResource('products', ProductController::class);
+Route::apiResource('products', ProductController::class)->only(['index', 'show']);
 
 Route::get('/cart/items', [CartItemController::class, 'index'])->name('cart.items');
 Route::post('/cart/items', [CartItemController::class, 'updateCart'])->name('cart.update');
+Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
 
-Route::get('/user/orders', [OrderController::class, 'getUserOrders'])->name('orders.getUserOrders');
-Route::apiResource('orders', OrderController::class)->only(['index', 'store', 'update', 'show']);
+Route::group(['middleware' => ['is_admin']], function () {
+    Route::apiResource('products', ProductController::class)->only(['store', 'update', 'destroy']);
+    Route::get('/user/orders', [OrderController::class, 'getUserOrders'])->name('orders.getUserOrders');
+    Route::apiResource('orders', OrderController::class)->only(['index', 'update']);
+});
