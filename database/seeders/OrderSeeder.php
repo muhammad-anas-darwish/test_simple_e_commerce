@@ -29,10 +29,10 @@ class OrderSeeder extends Seeder
                     $orderItem = OrderItem::create([
                         'order_id' => $order[0]['id'],
                         'product_id' => $products[$newProducts[$j]]['id'],
-                        'quantity' => rand(1, $products[$newProducts[$j]]['quantity']),
+                        'quantity' => rand(1, 200),
                         'price' => $products[$newProducts[$j]]['price'],
                     ]);
-                    $order[0]['total'] += $orderItem->quantity * $orderItem->price;
+                    $products[$newProducts[$j]]['quantity'] -= $orderItem['quantity'];
                 }
                 $order[0]->save();
             }

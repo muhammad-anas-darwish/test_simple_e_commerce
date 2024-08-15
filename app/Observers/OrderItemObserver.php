@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Exceptions\CustomJsonException;
 use App\Models\OrderItem;
 use App\Models\Product;
 use Exception;
@@ -19,11 +20,14 @@ class OrderItemObserver
         $product = Product::find($orderItem->product_id);
 
         if (!$product) {
-            abort(404, "Product not found");
+            // abort(404, "Product not found");
+            throw new CustomJsonException("Product not found", 404);
+
         }
 
         if ($orderItem->quantity > $product->quantity) {
-            abort(400, "Insufficient quantity available for product {$product->name}");
+            // abort(400, "Insufficient quantity available for product {$product->name}");
+            throw new CustomJsonException("Insufficient quantity available for product {$product->name}", 400);
         }
 
         $product->decrement('quantity', $orderItem->quantity);
