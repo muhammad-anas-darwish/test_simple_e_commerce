@@ -20,7 +20,7 @@ class OrderItemResource extends JsonResource
             'product' => new ProductResource($this->whenLoaded('product')),
             'order' => new OrderResource($this->whenLoaded('order')),
             'quantity' => $this->quantity,
-            'price' => '$' . number_format($this->price, 2),
+            'price' => format_price($this->price),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];

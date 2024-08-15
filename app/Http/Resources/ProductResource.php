@@ -19,8 +19,8 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $isCollection ? substr($this->description, 0, 50) . '...' : $this->description,
-            'price' => '$' . number_format($this->price, 2),
+            'description' => $isCollection ? truncate_text($this->description, 50): $this->description,
+            'price' => format_price($this->price),
             'quantity' => $this->quantity,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
