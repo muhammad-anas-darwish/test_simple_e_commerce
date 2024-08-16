@@ -13,11 +13,21 @@ class CartItemController extends Controller
 {
     use ApiResponses;
 
+    /**
+     * Inject the CartService dependency and require authentication.
+     *
+     * @param CartService $cartService The service handling cart operations.
+     */
     public function __construct(protected CartService $cartService)
     {
         $this->middleware('auth:api');
     }
 
+    /**
+     * Display a list of the authenticated user's cart items.
+     *
+     * @return JsonResponse The response containing the user's cart items.
+     */
     public function index()
     {
         $cartItems = Auth::user()->cartItems()->with('product')->get();
@@ -25,6 +35,12 @@ class CartItemController extends Controller
         return $this->successResponse(CartItemResource::collection($cartItems), 'Items retrieved successfully');
     }
 
+    /**
+     * Update the cart by adding a new item or adjusting the quantity of an existing item.
+     *
+     * @param AddItemToCartRequest $request The incoming request with product and quantity data.
+     * @return JsonResponse The response after updating the cart.
+     */
     public function updateCart(AddItemToCartRequest $request): JsonResponse
     {
         $data = $request->validated();

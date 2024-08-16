@@ -15,11 +15,21 @@ class OrderController extends Controller
 {
     use ApiResponses;
 
+    /**
+     * Inject the OrderService dependency and require authentication.
+     *
+     * @param OrderService $orderService The service handling order operations.
+     */
     public function __construct(protected OrderService $orderService) 
     { 
         $this->middleware('auth:api');
     }
 
+    /**
+     * Get a paginated list of the authenticated user's orders.
+     *
+     * @return JsonResponse Paginated list of the user's orders.
+     */
     public function getUserOrders(): JsonResponse
     {
         $orders = $this->orderService->getPaginatedUserOrders(Auth::id(), 10);
@@ -28,7 +38,9 @@ class OrderController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a paginated list of all orders.
+     *
+     * @return JsonResponse Paginated list of all orders.
      */
     public function index()
     {
@@ -38,7 +50,10 @@ class OrderController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created order in storage (handle checkout).
+     *
+     * @param StoreOrderRequest $request The incoming request with order data.
+     * @return JsonResponse The response containing the newly created order.
      */
     public function store(StoreOrderRequest $request)
     {
@@ -50,7 +65,10 @@ class OrderController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified order.
+     *
+     * @param Order $order The order to display.
+     * @return JsonResponse The response containing the order details.
      */
     public function show(Order $order)
     {
@@ -63,7 +81,11 @@ class OrderController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified order's status in storage.
+     *
+     * @param UpdateOrderRequest $request The incoming request with the new status.
+     * @param Order $order The order to update.
+     * @return JsonResponse The response containing the updated order.
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
