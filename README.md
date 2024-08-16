@@ -7,16 +7,6 @@ This repository contains the backend code for an e-commerce application built wi
 ## Table of Contents
 
 - [Installation](#installation)
-- [Usage](#usage)
-- [Code Structure](#code-structure)
-  - [Services](#services)
-  - [Repositories](#repositories)
-  - [Controllers](#controllers)
-  - [Requests](#requests)
-  - [Resources](#resources)
-- [API Endpoints](#api-endpoints)
-- [Error Handling](#error-handling)
-- [License](#license)
 
 ## Installation
 
