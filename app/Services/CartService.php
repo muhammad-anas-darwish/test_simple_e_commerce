@@ -5,9 +5,6 @@ namespace App\Services;
 use App\Exceptions\CustomJsonException;
 use App\Models\CartItem;
 use App\Models\Product;
-use Exception;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 
 class CartService
 {
