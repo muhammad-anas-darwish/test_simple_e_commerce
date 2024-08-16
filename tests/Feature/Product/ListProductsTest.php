@@ -1,16 +1,14 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Product;
 
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ProductControllerTest extends TestCase
+class ListProductsTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
-
     /**
      * Test retrieving a list of products.
      *
