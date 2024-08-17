@@ -10,7 +10,13 @@ use Tests\TestCase;
 
 class DeleteProductTest extends TestCase
 {
-    /** @test */
+    /**
+     * Test that an admin can delete a product.
+     * 
+     * This test logs in as an admin and sends a DELETE request to delete a product. It then
+     * asserts that the response status is 204 (No Content) and verifies that the product was
+     * successfully removed from the database.
+     */
     public function it_can_delete_a_product()
     {
         $admin = User::factory()->create(['is_admin' => true]);

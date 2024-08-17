@@ -10,9 +10,14 @@ use Tests\TestCase;
 class ListProductsTest extends TestCase
 {
     /**
-     * Test retrieving a list of products.
-     *
-     * @return void
+     * Test that a user can list their own orders.
+     * 
+     * This test attempts to retrieve the authenticated user's orders.
+     * It sends a GET request to the appropriate endpoint and asserts that
+     * the response status is 200. The response JSON structure is validated
+     * to ensure it includes the expected fields such as `id`, `status`, 
+     * `total`, `address`, `created_at`, and `updated_at` within the `data` 
+     * and pagination fields.
      */
     public function testCanRetrieveProducts()
     {

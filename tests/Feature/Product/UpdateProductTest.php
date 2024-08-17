@@ -10,7 +10,14 @@ use Tests\TestCase;
 
 class UpdateProductTest extends TestCase
 {
-    /** @test */
+    /**
+     * Test that an admin can update a product's details.
+     * 
+     * This test logs in as an admin and sends a PUT request to update an existing product's
+     * details. It then asserts that the response status is 200 and that the response JSON
+     * contains the updated product details. The test also verifies that the product was
+     * successfully updated in the database.
+     */
     public function it_can_update_a_product()
     {
         $admin = User::factory()->create(['is_admin' => true]);

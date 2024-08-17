@@ -9,6 +9,14 @@ use Tests\TestCase;
 
 class CreateProductTest extends TestCase
 {
+    /**
+     * Test that an admin can create a product.
+     * 
+     * This test logs in as an admin and sends a POST request to create a new product. It then
+     * asserts that the response status is 201 (Created) and that the response JSON contains the
+     * correct product details. The test also verifies that the product was successfully inserted
+     * into the database.
+     */
     public function it_can_create_a_product()
     {
         $admin = User::factory()->create(['is_admin' => true]);
